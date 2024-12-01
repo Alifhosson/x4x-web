@@ -3,15 +3,22 @@ const path = require('path');
 
 const app = express();
 
-// Static ফাইল সার্ভ করার জন্য:
+// Serve static files from the "alif" directory
 app.use(express.static(path.join(__dirname, 'alif')));
 
-// Routes
+// Handle the root route
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'alif', 'index.html'));
+  res.sendFile(path.join(__dirname, 'alif', 'index.html'), (err) => {
+    if (err) {
+      res.status(500).send('Error loading the page.');
+    }
+  });
 });
 
-const PORT = 3000;
+// Set the port
+const PORT = process.env.PORT || 3000;
+
+// Start the server
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}/`);
 });
